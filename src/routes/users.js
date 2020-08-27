@@ -1,11 +1,27 @@
 const router = require('express').Router();
 const {utilizadorController} = require('../controllers');
 
-router.get('/user/:userId', async (req, res) => {
-    const {userId} = req.params;
+// imagens
+const imagesPath = 'images/';
+const fs = require('fs').promises;
+const multer = require('multer');
+var storage = multer.diskStorage({
+    destination: function (req, file, cb) {
+      cb(null, imagesPath)
+    },
+    filename: function (req, file, cb) {
+      cb(null, Date.now() + '.jpg')
+    }
+  })
+var upload = multer({ storage: storage });
+
+router.get('/user', async (req, res) => {
+    let userId = req.user.id;
 
     try {
-        const user = await utilizadorController.retrieve(userId);
+        const user = (await utilizadorController.retrieve(userId)).toJSON();
+        user.imagem = await fs.readFile(imagesPath + user.nomeImagem, {encoding: 'base64'})
+
         res.status(200).send(user);
     } catch (error) {
         res.status(400).send(error.message);
@@ -23,18 +39,10 @@ router.get('/user/list/:page/:limit', async (req, res) => {
     }
 });
 
-router.post('/user', async (req, res) => {
+router.post('/user', upload.single('avatar'), async (req, res) => {
     let userId = req.user.id;
-    const {avatar} = req.body;
-
-    console.log(userId);
-
-    try {
-        //const developers = await utilizadorController.update(name, state, id, page);
-        console.log(avatar);
-        res.status(200).send([]);
-    } catch (error) {
-        res.status(400).send(error.message);
+    if (req.file) {
+        await utilizadorController.update(userId, {nomeImagem: req.file.filename}); 
     }
 });
 

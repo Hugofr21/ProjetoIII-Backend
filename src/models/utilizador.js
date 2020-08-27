@@ -62,7 +62,11 @@ module.exports = (sequelize, DataTypes) => {
     data_nascimento: {
       type: DataTypes.DATEONLY,
       allowNull: true
-    }
+    },
+    nomeImagem: {
+      type: DataTypes.STRING,
+      allowNull: true
+    },
   }, {
     tableName: 'utilizador'
   });

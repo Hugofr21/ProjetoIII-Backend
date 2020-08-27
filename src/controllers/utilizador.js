@@ -23,16 +23,14 @@ const list = async (page, limit) => Utilizador.findAll({
 
 const retrieve = async (utilizadorId) => Utilizador.findByPk(utilizadorId);
 
-const update = async (utilizadorId, tipo) => {
+const update = async (utilizadorId, user) => {
   const utilizador = await Utilizador.findByPk(utilizadorId);
 
   if (!utilizador) {
     throw new Error('Utilizador not found');
   }
 
-  return utilizador.update({
-    tipo: tipo || utilizador.tipo,
-  });
+  return utilizador.update(user);
 };
 
 const destroy = async (utilizadorId) => {
