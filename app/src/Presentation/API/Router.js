@@ -2,6 +2,8 @@ const bodyParser = require('body-parser');
 const express = require('express');
 const morgan = require('morgan');
 const passport = require('passport');
+import cors from 'cors';
+import { loadControllers, scopePerRequest } from 'awilix-express';
 
 const Router = container => {
     const {config} = container;
@@ -16,6 +18,10 @@ const Router = container => {
     // router configuration
     router.use(bodyParser.json({limit:'50mb'}));
     router.use(bodyParser.urlencoded({extended:true, limit:'50mb'}));
+    //router.use(cors());
+
+    router.use(scopePerRequest(container));
+    router.use(loadControllers('./Controller/*.js', {cwd: __dirname}));
 
     // Authentication
     require('./auth/passport');
