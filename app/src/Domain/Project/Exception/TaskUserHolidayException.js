@@ -1,0 +1,3 @@
+class TaskUserHolidayException extends Error {
+
+}

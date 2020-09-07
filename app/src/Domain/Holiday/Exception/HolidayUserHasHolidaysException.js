@@ -1,0 +1,3 @@
+class HolidayUserHasHolidaysException extends User {
+
+}

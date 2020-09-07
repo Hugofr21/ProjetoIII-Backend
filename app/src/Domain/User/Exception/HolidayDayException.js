@@ -1,0 +1,3 @@
+class HolidayDayException extends Error {
+
+}

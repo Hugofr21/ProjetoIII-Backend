@@ -1,0 +1,3 @@
+class TaskUserBusyException extends Error {
+
+}
