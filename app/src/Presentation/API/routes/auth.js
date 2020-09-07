@@ -1,7 +1,7 @@
 const router = require('express').Router();
 const jwt = require('jsonwebtoken');
 const passport = require('passport');
-const {JWT_SECRET} = require('../config/configs');
+const {JWT_SECRET} = 'top_secret';
 
 router.post('/login', async (req, res, next) => {
     passport.authenticate('login', async (err, user, info) => {

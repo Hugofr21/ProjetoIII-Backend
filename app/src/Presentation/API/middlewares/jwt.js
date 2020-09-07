@@ -1,5 +1,5 @@
 const jwt = require("jsonwebtoken"); //módulo NPM
-const {JWT_SECRET} = 'top_secret';
+const { JWT_SECRET } = 'top_secret';
 let checkToken = (req, res, next) => {
     let token = req.headers["x-access-token"] || req.headers["authorization"]
     if (token.startsWith('Bearer ')) {

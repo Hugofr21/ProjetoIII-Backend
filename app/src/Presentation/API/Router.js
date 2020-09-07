@@ -1,7 +1,7 @@
-// dependencies
 const bodyParser = require('body-parser');
 const express = require('express');
 const morgan = require('morgan');
+const passport = require('passport');
 
 const Router = container => {
     const {config} = container;
@@ -17,9 +17,11 @@ const Router = container => {
     router.use(bodyParser.json({limit:'50mb'}));
     router.use(bodyParser.urlencoded({extended:true, limit:'50mb'}));
 
-    console.log(1);
+    // Authentication
+    require('./auth/passport');
+    router.use(passport.initialize());
+
     router.use(require('./middlewares'));
-    console.log(2);
     router.use(require('./routes'));
 
     return router;

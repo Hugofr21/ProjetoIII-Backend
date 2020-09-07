@@ -1,7 +1,3 @@
-const bcrypt = require('bcryptjs');
-
-const SALT_WORK_FACTOR = 10;
-
 module.exports = (sequelize, DataTypes) => {
   const Utilizador = sequelize.define('Utilizador', {
     id_utilizador: {
@@ -71,20 +67,6 @@ module.exports = (sequelize, DataTypes) => {
     tableName: 'utilizador'
   });
 
-  // eslint-disable-next-line
-  Utilizador.prototype.isValidPassword = async function (password) {
-    const compare = await bcrypt.compare(password, this.password);
-    return compare;
-  };
-
-  // Utilizador.associate = (models) => {
-  //   // associations can be defined here
-  // };
-
-  Utilizador.beforeCreate(async (utilizador) => {
-    /* eslint-disable */
-    utilizador.password = await bcrypt.hash(utilizador.password, SALT_WORK_FACTOR);
-  });
 
   return Utilizador;
 };
