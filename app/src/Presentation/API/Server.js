@@ -1,8 +1,10 @@
 const express = require('express');
+import { loadControllers, scopePerRequest } from 'awilix-express';
 
 class Server {
-    constructor({config, router}) {
+    constructor({container, config, router}) {
         this.app = express();
+        this.container = container;
         this.config = config;
         this.router = router;
     }
@@ -16,6 +18,9 @@ class Server {
 
         // load up the router
         this.app.use(this.router);
+
+        this.app.use(scopePerRequest(this.container));
+        this.app.use(loadControllers('Controller/*.js', { cwd: __dirname }));
     }
 
     /**
@@ -32,6 +37,10 @@ class Server {
                 console.log(`API Running at: http://localhost:${port}/`);
             });
         });
+    }
+
+    test() {
+        console.log("TEST");
     }
 }
 

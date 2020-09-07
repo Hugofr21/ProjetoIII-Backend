@@ -3,7 +3,7 @@ const express = require('express');
 const morgan = require('morgan');
 const passport = require('passport');
 import cors from 'cors';
-import { loadControllers, scopePerRequest } from 'awilix-express';
+
 
 const Router = container => {
     const {config} = container;
@@ -20,15 +20,15 @@ const Router = container => {
     router.use(bodyParser.urlencoded({extended:true, limit:'50mb'}));
     //router.use(cors());
 
-    router.use(scopePerRequest(container));
-    router.use(loadControllers('./Controller/*.js', {cwd: __dirname}));
-
     // Authentication
-    require('./auth/passport');
-    router.use(passport.initialize());
+    //require('./auth/passport');
+    //router.use(passport.initialize());
 
-    router.use(require('./middlewares'));
-    router.use(require('./routes'));
+    //router.use(require('./middlewares'));
+    //router.use(require('./routes'));
+
+    //router.use(scopePerRequest(container));
+    //router.use(loadControllers('Controller/*.js', {cwd: __dirname}));
 
     return router;
 };

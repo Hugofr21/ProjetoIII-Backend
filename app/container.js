@@ -14,7 +14,7 @@ const container = createContainer();
 container.register({
     config: asValue(config),
     router: asFunction(router).singleton(),
-    server: asClass(Server).singleton(),
+    server: asClass(Server).singleton().inject((c) => ({ container: c })),
 });
 
 module.exports = container;
