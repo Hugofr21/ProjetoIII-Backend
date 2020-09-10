@@ -1,7 +1,7 @@
 const passport = require('passport');
 const LocalStrategy = require('passport-local').Strategy;
 const {Strategy, ExtractJwt} = require('passport-jwt');
-const {Utilizador} = require('../models');
+const {Utilizador} = require('../../../Infrastructure/Database/models');
 const {JWT_SECRET} = 'top_secret';
 
 passport.use('login', new LocalStrategy({

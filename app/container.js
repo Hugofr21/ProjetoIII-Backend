@@ -2,6 +2,10 @@ const {asClass, asValue, asFunction, createContainer, Lifetime} = require('awili
 
 const config = require('./config/config');
 
+// infrastructures
+const database = require('Infrastructure/Database');
+
+
 // interfaces
 // server setup
 const router = require('./src/Presentation/API/Router');
@@ -15,6 +19,22 @@ container.register({
     config: asValue(config),
     router: asFunction(router).singleton(),
     server: asClass(Server).singleton().inject((c) => ({ container: c })),
+
+    // infrastructures
+    database: asFunction(database).singleton(),
 });
+
+container.loadModules(
+    ['src/**/*Service.js', 'src/Infrastructure/Repository/*!(BaseRepository).js'],
+    {
+        formatName: 'camelCase',
+        resolverOptions: {
+            lifetime: Lifetime.SINGLETON,
+        },
+        cwd: __dirname,
+    }
+);
+
+//console.log(container.registrations);
 
 module.exports = container;

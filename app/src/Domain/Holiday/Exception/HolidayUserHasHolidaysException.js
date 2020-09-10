@@ -1,3 +1,3 @@
-class HolidayUserHasHolidaysException extends User {
+class HolidayUserHasHolidaysException extends Error {
 
 }

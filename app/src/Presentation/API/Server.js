@@ -2,11 +2,12 @@ const express = require('express');
 import { loadControllers, scopePerRequest } from 'awilix-express';
 
 class Server {
-    constructor({container, config, router}) {
+    constructor({container, config, router, database}) {
         this.app = express();
         this.container = container;
         this.config = config;
         this.router = router;
+        this.database = database;
     }
 
     /**
@@ -37,10 +38,6 @@ class Server {
                 console.log(`API Running at: http://localhost:${port}/`);
             });
         });
-    }
-
-    test() {
-        console.log("TEST");
     }
 }
 
