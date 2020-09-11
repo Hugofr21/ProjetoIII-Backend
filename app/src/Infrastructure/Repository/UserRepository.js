@@ -12,6 +12,10 @@ export default class UserRepository extends BaseRepository implements UserReposi
         return await this.findById(userId);
     }
 
+    async getUserByEmail(email: string): ?User {
+        return await this.findByField('email', email);
+    }
+
     async save(user: User) {
         return await this.create(user);
     }

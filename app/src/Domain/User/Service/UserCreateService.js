@@ -1,5 +1,6 @@
 import UserRepositoryInterface from "/Domain/User/Repository/UserRepositoryInterface";
 import User from "../Model/User";
+import {Password} from "../ValueObject/Password";
 
 export default class UserCreateService {
     #userRepository: UserRepositoryInterface;
@@ -8,9 +9,9 @@ export default class UserCreateService {
         this.#userRepository = userRepository;
     }
 
-    async createUser(username: string, email: string, password: string, n_contribuinte: string, morada: string, sexo: string, idade: Number,
-                     nacionalidade: string, telefone: string, tipo: string, data_nascimento: Date) {
-        let user: User = new User(username, email, password, n_contribuinte, morada, sexo, idade, nacionalidade, telefone, tipo, data_nascimento);
+    async createUser(username: string, email: string, password: Password, nif: string, address: string, gender: string, age: Number,
+                     nationality: string, phone: string, type: string, birthDate: Date) {
+        let user: User = new User(username, email, password, nif, address, gender, age, nationality, phone, type, birthDate);
         await this.#userRepository.save(user);
         return user;
     }

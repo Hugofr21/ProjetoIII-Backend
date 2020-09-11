@@ -1,14 +1,12 @@
-/* jshint indent: 2 */
-
 module.exports = function (sequelize, DataTypes) {
-    const Like = sequelize.define('Like', {
+    const UserSkill = sequelize.define('UserSkill', {
         id: {
             type: DataTypes.INTEGER,
             allowNull: false,
             primaryKey: true,
             autoIncrement: true
         },
-        fromUserId: {
+        userId: {
             type: DataTypes.INTEGER,
             allowNull: false,
             references: {
@@ -16,24 +14,24 @@ module.exports = function (sequelize, DataTypes) {
                 key: 'id'
             }
         },
-        toUserId: {
+        skillId: {
             type: DataTypes.INTEGER,
             allowNull: false,
             references: {
-                model: 'users',
+                model: 'skills',
                 key: 'id'
             }
         }
     }, {
-        tableName: 'likes',
+        tableName: 'user_skills',
         timestamps: false
     });
 
-    Like.associate = (db) => {
+    UserSkill.associate = (db) => {
         let userModel = db.models.UserModel
-        userModel.hasMany(Like, {foreignKey: 'toUserId', targetKey: 'id', as: 'likes' });
-        userModel.includes.push({model: Like, as: 'likes'});
+        userModel.hasMany(UserSkill, {foreignKey: 'userId', targetKey: 'id', as: 'skills' });
+        userModel.includes.push({model: UserSkill, as: 'skills'});
     };
 
-    return Like;
+    return UserSkill;
 };

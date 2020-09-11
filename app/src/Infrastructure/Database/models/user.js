@@ -1,6 +1,4 @@
-const bcrypt = require('bcryptjs');
-
-const SALT_WORK_FACTOR = 10;
+import {Password} from "../../../Domain/User/ValueObject/Password";
 
 module.exports = (sequelize, DataTypes) => {
     const User = sequelize.define('User', {
@@ -96,20 +94,9 @@ module.exports = (sequelize, DataTypes) => {
         timestamps: false
     });
 
-    // eslint-disable-next-line
-    User.prototype.isValidPassword = async function (password) {
-        const compare = await bcrypt.compare(password, this.password);
-        return compare;
+    User.associate = (db) => {
+        User.valueObjects.push({model: Password, field: 'password'});
     };
-
-    // User.associate = (models) => {
-    //   // associations can be defined here
-    // };
-
-    User.beforeCreate(async (user) => {
-        /* eslint-disable */
-        user.password = await bcrypt.hash(user.password, SALT_WORK_FACTOR);
-    });
 
     return User;
 };

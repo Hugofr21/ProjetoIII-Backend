@@ -13,20 +13,11 @@ export default class DeveloperController {
 
     @POST()
     async create(req, res, _next) {
-
-        let developer = await this.#developerCreateService.createDeveloper(
-            "developer-test",
-            "developertest@developertest.com",
-            "test",
-            "65656566",
-            "morada",
-            "sexo",
-            20,
-            "Portuguesa",
-            943582345,
-            "developer",
-            new Date()
-        );
+        const {
+            username, email, password, name, birthDate, nif, address, phone, gender, age, postalCode, nationality, availableToTravel,
+            isTeamLeader
+        } = req.body;
+        let developer = await this.#developerCreateService.createDeveloper(username, email, password, nif, address, gender, age, nationality, phone, 'devellper', birthDate);
 
         return res.status(200).json(developer);
     }

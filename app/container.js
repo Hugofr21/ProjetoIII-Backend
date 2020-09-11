@@ -1,3 +1,5 @@
+import {Seeder} from "Infrastructure/Database/Seeder";
+
 const {asClass, asValue, asFunction, createContainer, Lifetime} = require('awilix');
 
 const config = require('./config/config');
@@ -19,6 +21,9 @@ container.register({
     config: asValue(config),
     router: asFunction(router).singleton(),
     server: asClass(Server).singleton().inject((c) => ({ container: c })),
+
+    //seeders
+    seeder: asClass(Seeder).singleton(),
 
     // infrastructures
     database: asFunction(database).singleton(),

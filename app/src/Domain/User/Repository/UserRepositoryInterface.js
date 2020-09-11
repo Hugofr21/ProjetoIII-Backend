@@ -4,7 +4,9 @@ export default class UserRepositoryInterface {
     getUserById(userId: Number): ?User {
     }
 
-    save(user: User): void {
+    async getUserByEmail(email: string): ?User {
+    }
 
+    save(user: User): void {
     }
 }

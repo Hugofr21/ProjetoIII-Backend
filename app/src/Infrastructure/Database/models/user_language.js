@@ -1,14 +1,12 @@
-/* jshint indent: 2 */
-
 module.exports = function (sequelize, DataTypes) {
-    const Like = sequelize.define('Like', {
+    const UserLanguage = sequelize.define('UserLanguage', {
         id: {
             type: DataTypes.INTEGER,
             allowNull: false,
             primaryKey: true,
             autoIncrement: true
         },
-        fromUserId: {
+        userId: {
             type: DataTypes.INTEGER,
             allowNull: false,
             references: {
@@ -16,24 +14,24 @@ module.exports = function (sequelize, DataTypes) {
                 key: 'id'
             }
         },
-        toUserId: {
+        languageId: {
             type: DataTypes.INTEGER,
             allowNull: false,
             references: {
-                model: 'users',
+                model: 'languages',
                 key: 'id'
             }
         }
     }, {
-        tableName: 'likes',
+        tableName: 'user_languages',
         timestamps: false
     });
 
-    Like.associate = (db) => {
+    UserLanguage.associate = (db) => {
         let userModel = db.models.UserModel
-        userModel.hasMany(Like, {foreignKey: 'toUserId', targetKey: 'id', as: 'likes' });
-        userModel.includes.push({model: Like, as: 'likes'});
+        userModel.hasMany(UserLanguage, {foreignKey: 'userId', targetKey: 'id', as: 'languages' });
+        userModel.includes.push({model: UserLanguage, as: 'languages'});
     };
 
-    return Like;
+    return UserLanguage;
 };

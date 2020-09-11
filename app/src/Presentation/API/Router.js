@@ -1,8 +1,9 @@
+//import {checkToken} from "./Middleware/AuthVerifyMiddleware";
+
+const cors = require('cors');
 const bodyParser = require('body-parser');
 const express = require('express');
 const morgan = require('morgan');
-const passport = require('passport');
-import cors from 'cors';
 
 
 const Router = container => {
@@ -15,20 +16,14 @@ const Router = container => {
         router.use(morgan('dev'));
     }
 
+    router.use(cors());
     // router configuration
-    router.use(bodyParser.json({limit:'50mb'}));
-    router.use(bodyParser.urlencoded({extended:true, limit:'50mb'}));
+    router.use(bodyParser.json({limit: '50mb'}));
+    router.use(bodyParser.urlencoded({extended: true, limit: '50mb'}));
     //router.use(cors());
 
     // Authentication
-    //require('./auth/passport');
-    //router.use(passport.initialize());
-
-    //router.use(require('./middlewares'));
-    //router.use(require('./routes'));
-
-    //router.use(scopePerRequest(container));
-    //router.use(loadControllers('Controller/*.js', {cwd: __dirname}));
+    //router.use(checkToken());
 
     return router;
 };

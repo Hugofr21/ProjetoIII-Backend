@@ -26,8 +26,8 @@ const Database = ({config}) => {
             const modelDir = path.join(dir, file);
             const model = sequelize.import(modelDir);
             model.includes = [];
+            model.valueObjects = [];
             db.models[`${model.name}Model`] = model;
-
         });
 
     Object.keys(db.models).forEach((modelName) => {

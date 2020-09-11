@@ -1,5 +1,9 @@
 import Like from "./Like";
 import {object, list, serializable} from "serializr"
+import {Password} from "../ValueObject/Password";
+import UserLanguage from "./UserLanguage";
+import {Language} from "../../Language/Model/Language";
+import UserSkill from "./UserSkill";
 
 export default class User {
     @serializable id: Number;
@@ -7,7 +11,7 @@ export default class User {
     @serializable name: string;
     @serializable email: string;
     @serializable emailVerifiedAt: Date;
-    @serializable password: string;
+    @serializable(object(Password)) password: Password;
     @serializable active: boolean;
     @serializable createdAt: Date;
     @serializable updatedAt: Date;
@@ -22,8 +26,10 @@ export default class User {
     @serializable birthDate: Date;
 
     @serializable(list(object(Like)))likes: Like[];
+    @serializable(list(object(UserLanguage)))languages: UserLanguage[];
+    @serializable(list(object(UserSkill)))skills: UserSkill[];
 
-    constructor(username: string, email: string, password: string, nif: string, address: string, gender: string, age: Number,
+    constructor(username: string, email: string, password: Password, nif: string, address: string, gender: string, age: Number,
                 nationality: string, phone: string, type: string, birthDate: Date) {
         this.username = username;
         this.email = email;
@@ -44,6 +50,8 @@ export default class User {
         this.session = null;
 
         this.likes = [];
+        this.languages = [];
+        this.skills = [];
     }
 
 
@@ -52,5 +60,20 @@ export default class User {
         this.likes.push(like);
     }
 
+    addLanguage(languageId: Number) {
+        if (languageId in this.languages) {
+            return;
+        }
+        let language: UserLanguage = new UserLanguage(this.id, languageId);
+        this.languages.push(language);
+    }
+
+    addSkill(skillId: Number) {
+        if (skillId in this.languages) {
+            return;
+        }
+        let skill: UserSkill = new UserSkill(this.id, skillId);
+        this.skills.push(skill);
+    }
 
 }
