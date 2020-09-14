@@ -7,6 +7,9 @@ export default class UserRepositoryInterface {
     async getUserByEmail(email: string): ?User {
     }
 
+    async listUsers(page: Number, limit: Number): User[] {
+    }
+
     save(user: User): void {
     }
 }

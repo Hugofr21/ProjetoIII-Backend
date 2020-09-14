@@ -26,6 +26,7 @@ export default class User {
     @serializable postalCode: string;
     @serializable availableToTravel: boolean;
     @serializable isTeamLeader: boolean;
+    @serializable imageName: string;
 
     @serializable(list(object(Like)))likes: Like[];
     @serializable(list(object(UserLanguage)))languages: UserLanguage[];
@@ -50,7 +51,8 @@ export default class User {
         this.postalCode = postalCode;
         this.availableToTravel = availableToTravel;
         this.isTeamLeader = isTeamLeader;
-
+        this.imageName = '';
+        
         this.active = true;
         this.emailVerifiedAt = new Date();
         this.createdAt = new Date();
@@ -63,7 +65,7 @@ export default class User {
     }
 
     addLike(userId: Number) {
-        let like: Like = new Like(this.id, this.id);
+        let like: Like = new Like(userId, this.id);
         this.likes.push(like);
     }
 
@@ -81,6 +83,10 @@ export default class User {
         }
         let skill: UserSkill = new UserSkill(this.id, skillId);
         this.skills.push(skill);
+    }
+
+    setImageName(imageName: string) {
+        this.imageName = imageName;
     }
 
 }

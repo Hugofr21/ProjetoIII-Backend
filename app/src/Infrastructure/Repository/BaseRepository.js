@@ -56,34 +56,6 @@ class BaseRepository {
         return await this.findByField('id', id);
     }
 
-    // async findAll(args) {
-    //     // where clause
-    //     const where = {};
-    //
-    //     // if (args.filter) {
-    //     //     // loop
-    //     //     Object.keys(args.filter).forEach(field => {
-    //     //         // set the where clause
-    //     //         where[field] = {};
-    //     //
-    //     //         // get conditions
-    //     //         const conditions = args.filter[field];
-    //     //
-    //     //         Object.keys(conditions).forEach(operation => {
-    //     //             where[field] = {[Op[operation]]: conditions[operation]};
-    //     //         });
-    //     //     });
-    //     // }
-    //
-    //     const result = await this.model.findAndCountAll({where});
-    //
-    //     // return
-    //     return {
-    //         results: result.rows,
-    //         total: result.count,
-    //     };
-    // }
-
     async update(data) {
     }
 
@@ -100,24 +72,42 @@ class BaseRepository {
         return model;
     }
 
-    async findAll(filter = {}) {
+    async findAll(filter = null, page: Number = null, limit: Number = null) {
         const where = {};
-        Object.keys(filter).forEach(field => {
-            // set the where clause
-            where[field] = {};
+        if (filter !== null) {
+            Object.keys(filter).forEach(field => {
+                // set the where clause
+                where[field] = {};
 
-            // get conditions
-            const conditions = filter[field];
+                // get conditions
+                const conditions = filter[field];
 
-            Object.keys(conditions).forEach(operation => {
-                where[field] = {[Op[operation]]: conditions[operation]};
+                Object.keys(conditions).forEach(operation => {
+                    where[field] = {[Op[operation]]: conditions[operation]};
+                });
             });
-        });
-        console.log(where);
+        }
+        const params = {where, include: this.model.includes, nest: true};
+        if (page !== null && limit != null) {
+            params.offset = page * limit;
+            params.limit = limit;
+        }
 
-        let result = await this.model.findAndCountAll({where, include: this.model.includes, raw: true, nest: true});
+        let rows = [];
         let models = [];
-        result.rows.forEach(r => models.push(deserialize(this.domain, r)));
+        let result = await this.model.findAndCountAll(params);
+        result.rows.forEach(row => rows.push(row.get({ plain: true })));
+        rows.forEach(r => {
+            let model = deserialize(this.domain, r);
+            this.model.valueObjects.forEach(vo => model[vo.field] = deserialize(vo.model, {value: model[vo.field]}));
+            models.push(model);
+        });
+        if (page !== null && limit != null) {
+            return {
+                count: result.count,
+                rows: models
+            };
+        }
         return models;
     }
 }

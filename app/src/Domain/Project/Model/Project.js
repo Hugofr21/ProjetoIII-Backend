@@ -1,12 +1,14 @@
+import {object, list, serializable, date} from "serializr"
+
 export default class Project {
-    id: Number;
-    teamLeaderId: Number;
-    name: string;
-    createdAt: Date;
-    deliveryDate: Date;
-    comments: string;
+    @serializable id: Number;
+    @serializable teamLeaderId: Number;
+    @serializable name: string;
+    @serializable(date()) createdAt: Date;
+    @serializable(date()) deliveryDate: Date;
+    @serializable comments: string;
     //status: ProjectStatus;
-    availableToTravel: boolean;
+    @serializable availableToTravel: boolean;
 
     tasks: Task[];
 

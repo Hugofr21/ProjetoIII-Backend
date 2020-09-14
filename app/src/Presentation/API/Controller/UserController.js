@@ -1,4 +1,4 @@
-import {GET, POST, route} from 'awilix-express';
+import { GET, POST, route } from 'awilix-express';
 
 import UserCreateService from "Domain/User/Service/UserCreateService";
 import UserRepositoryInterface from "../../../Domain/User/Repository/UserRepositoryInterface";
@@ -10,7 +10,7 @@ export default class UserController {
     #userCreateService: UserCreateService
     #userRepository: UserRepositoryInterface
 
-    constructor({userCreateService, userRepository}) {
+    constructor({ userCreateService, userRepository }) {
         this.#userCreateService = userCreateService;
         this.#userRepository = userRepository;
     }
@@ -40,13 +40,23 @@ export default class UserController {
     }
 
 
-    @route('/like')
-    @GET()
+    @route('/like/:toUserId')
+    @POST()
     async addLike(req, res) {
-        let user: User = await this.#userRepository.getUserById(1);
+        const { toUserId } = req.params;
+        let user: User = await this.#userRepository.getUserById(toUserId);
         user.addLike(1);
         await this.#userRepository.save(user);
 
-        return res.status(200).json(user);
+        return res.status(200).send({count: user.likes.length});
+    }
+
+    @route('/list/:page/:limit')
+    @POST()
+    async listUsers(req, res) {
+        const { page, limit } = req.params;
+
+        let users: User[] = await this.#userRepository.listUsers(page, limit);
+        return res.status(200).send(users);
     }
 }
