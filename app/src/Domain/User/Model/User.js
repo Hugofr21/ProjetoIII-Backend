@@ -1,8 +1,7 @@
 import Like from "./Like";
-import {object, list, serializable} from "serializr"
+import {object, list, serializable, date} from "serializr"
 import {Password} from "../ValueObject/Password";
 import UserLanguage from "./UserLanguage";
-import {Language} from "../../Language/Model/Language";
 import UserSkill from "./UserSkill";
 
 export default class User {
@@ -10,11 +9,11 @@ export default class User {
     @serializable username: string;
     @serializable name: string;
     @serializable email: string;
-    @serializable emailVerifiedAt: Date;
+    @serializable(date()) emailVerifiedAt: Date;
     @serializable(object(Password)) password: Password;
     @serializable active: boolean;
-    @serializable createdAt: Date;
-    @serializable updatedAt: Date;
+    @serializable(date()) createdAt: Date;
+    @serializable(date()) updatedAt: Date;
     @serializable nif: string;
     @serializable address: string;
     @serializable gender: string;
@@ -23,15 +22,21 @@ export default class User {
     @serializable phone: string;
     @serializable type: string;
     @serializable session: string;
-    @serializable birthDate: Date;
+    @serializable(date()) birthDate: Date;
+    @serializable postalCode: string;
+    @serializable availableToTravel: boolean;
+    @serializable isTeamLeader: boolean;
 
     @serializable(list(object(Like)))likes: Like[];
     @serializable(list(object(UserLanguage)))languages: UserLanguage[];
     @serializable(list(object(UserSkill)))skills: UserSkill[];
 
-    constructor(username: string, email: string, password: Password, nif: string, address: string, gender: string, age: Number,
-                nationality: string, phone: string, type: string, birthDate: Date) {
+
+    constructor(username: string, name: string, email: string, password: Password, nif: string, address: string, gender: string,
+                age: Number, nationality: string, phone: string, type: string, birthDate: Date, postalCode: string,
+                availableToTravel: boolean, isTeamLeader: boolean) {
         this.username = username;
+        this.name = name;
         this.email = email;
         this.password = password;
         this.nif = nif;
@@ -42,9 +47,12 @@ export default class User {
         this.phone = phone;
         this.type = type;
         this.birthDate = birthDate;
+        this.postalCode = postalCode;
+        this.availableToTravel = availableToTravel;
+        this.isTeamLeader = isTeamLeader;
 
         this.active = true;
-        this.emailVerifiedAt = null;
+        this.emailVerifiedAt = new Date();
         this.createdAt = new Date();
         this.updatedAt = new Date();
         this.session = null;
@@ -53,7 +61,6 @@ export default class User {
         this.languages = [];
         this.skills = [];
     }
-
 
     addLike(userId: Number) {
         let like: Like = new Like(this.id, this.id);

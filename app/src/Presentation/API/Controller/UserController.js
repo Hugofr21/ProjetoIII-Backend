@@ -17,7 +17,7 @@ export default class UserController {
 
     @GET()
     async getAll(req, res) {
-        let user = await this.#userCreateService.getUser(1);
+        let user = await this.#userCreateService.getUser(2);
 
         return res.status(200).json(user);
     }

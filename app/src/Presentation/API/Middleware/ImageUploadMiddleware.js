@@ -1,26 +1,14 @@
-import * as jwt from "jsonwebtoken";
-
-export function checkToken() {
-    return (req, res, next) => {
-        let token = req.headers["x-access-token"] || req.headers["authorization"];
-        if (token && token.startsWith('Bearer ')) {
-            token = token.slice(7, token.length);
-            jwt.verify(token, 'top_secret', (err, decoded) => {
-                if (err) {
-                    return res.json({
-                        success: false,
-                        message: 'O token não é válido.'
-                    });
-                } else {
-                    req.decoded = decoded;
-                    next();
-                }
-            });
-        } else {
-            return res.json({
-                success: false,
-                message: 'Token indisponível.'
-            });
-        }
+const imagesPath = 'images/';
+const multer = require('multer');
+var storage = multer.diskStorage({
+    destination: function (req, file, cb) {
+        cb(null, imagesPath)
+    },
+    filename: function (req, file, cb) {
+        cb(null, Date.now() + '.jpg')
     }
-}
+})
+const upload = multer({ storage: storage });
+module.exports = {
+    upload
+};
