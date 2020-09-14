@@ -3,6 +3,7 @@ const path = require('path');
 const Sequelize = require('sequelize');
 
 const Database = ({config}) => {
+    console.log(config);
     // instantiate sequelize
     const sequelize = new Sequelize(config.DB_NAME, config.DB_USERNAME, config.DB_PASSWORD, {
         host: config.DB_HOST,
