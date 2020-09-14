@@ -2,6 +2,7 @@ import SkillCreateService from "Domain/Skill/Service/SkillCreateService";
 import SkillType from "../../Domain/Skill/Model/SkillType";
 import UserCreateService from "../../Domain/User/Service/UserCreateService";
 import LanguageCreateService from "../../Domain/Language/Service/LanguageCreateService";
+import {Password} from "../../Domain/User/ValueObject/Password";
 
 export class Seeder {
 
@@ -63,8 +64,9 @@ export class Seeder {
     async createAdminUser() {
         await this.#userCreateService.createUser(
             "admin",
+            "Admin",
             "admin@admin.com",
-            "admin",
+            new Password("admin"),
             "123456789",
             "esposende",
             "masculino",
@@ -72,7 +74,10 @@ export class Seeder {
             "portuguesa",
             "963541834",
             "admin",
-            new Date()
+            new Date(),
+            "4740-634",
+            false,
+            false
         );
     }
 

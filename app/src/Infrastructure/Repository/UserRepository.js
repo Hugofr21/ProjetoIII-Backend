@@ -17,6 +17,6 @@ export default class UserRepository extends BaseRepository implements UserReposi
     }
 
     async save(user: User) {
-        return await this.create(user);
+        await this.create(user);
     }
 }

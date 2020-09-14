@@ -3,7 +3,7 @@ envs.config();
 
 module.exports = {
     JWT_SECRET: 'top_secret',
-    FORCE_UPDATE_DB: false,
+    FORCE_UPDATE_DB: true,
     NODE_ENV: process.env.NODE_ENV,
     NODE_PORT: process.env.NODE_PORT,
     DB_USERNAME: process.env.USERNAME,

@@ -13,28 +13,37 @@ class BaseRepository {
         }
 
         try {
-            await this.createModelIncludes(entity);
-            let modelInstance = await this.model.upsert(entity);
-            entity.id = modelInstance.id;
+            console.log(12323);
+            let model = serialize(this.domain, entity);
+            console.log(22222);
+            console.log(model);
+            this.model.valueObjects.forEach(vo => model[vo.field] = model[vo.field].value);
+            await this.createModelIncludes(model);
+            if (entity.id === undefined) {
+                let modelInstance = await this.model.create(model);
+                entity.id = modelInstance.id;
+            } else {
+                await this.model.update(model, {where: {id: entity.id}});
+            }
 
         } catch (error) {
             throw new Error(error);
         }
     }
 
-    async createModelIncludes(entity) {
+    async createModelIncludes(model) {
         for (const i of this.model.includes) {
             const modelAttribute = i.as;
             const dbModel = i.model;
-            if (entity[modelAttribute] === undefined) {
+            if (model[modelAttribute] === undefined) {
                 continue;
             }
-            for (let i = 0; i < entity[modelAttribute].length; i++) {
-                if (entity[modelAttribute][i].id !== undefined) {
+            for (let i = 0; i < model[modelAttribute].length; i++) {
+                if (model[modelAttribute][i].id !== undefined) {
                     continue;
                 }
-                let modelInstance = await dbModel.create(entity[modelAttribute][i]);
-                entity[modelAttribute][i].id = modelInstance.id;
+                let modelInstance = await dbModel.create(model[modelAttribute][i]);
+                model[modelAttribute][i].id = modelInstance.id;
             }
         }
     }

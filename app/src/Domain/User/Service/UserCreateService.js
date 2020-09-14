@@ -9,10 +9,27 @@ export default class UserCreateService {
         this.#userRepository = userRepository;
     }
 
-    async createUser(username: string, email: string, password: Password, nif: string, address: string, gender: string, age: Number,
-                     nationality: string, phone: string, type: string, birthDate: Date) {
-        let user: User = new User(username, email, password, nif, address, gender, age, nationality, phone, type, birthDate);
-        await this.#userRepository.save(user);
+    async createUser(username: string, name: string, email: string, password: Password, nif: string, address: string, gender: string,
+                     age: Number, nationality: string, phone: string, type: string, birthDate: Date, postalCode: string,
+                     availableToTravel: boolean, isTeamLeader: boolean) {
+        let user: User = new User(
+            username,
+            name,
+            email,
+            password,
+            nif,
+            address,
+            gender,
+            age,
+            nationality,
+            phone,
+            type,
+            birthDate,
+            postalCode,
+            availableToTravel,
+            isTeamLeader
+        );
+        await this.#userRepository.save(user)
         return user;
     }
 
